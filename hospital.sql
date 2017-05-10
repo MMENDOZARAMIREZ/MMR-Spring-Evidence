@@ -40,11 +40,11 @@ DROP TABLE IF EXISTS `consultorio`;
 CREATE TABLE IF NOT EXISTS `consultorio` (
   `id_Consultorio` int(11) NOT NULL AUTO_INCREMENT,
   `id_Departamento` int(11) DEFAULT NULL,
-  `piso` int(11) DEFAULT NULL,
+  `piso` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id_Consultorio`),
   KEY `id_Departamento` (`id_Departamento`),
   CONSTRAINT `FK_consultorio_departamentos` FOREIGN KEY (`id_Departamento`) REFERENCES `departamentos` (`id_Departamento`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
 -- La exportación de datos fue deseleccionada.
 -- Volcando estructura para tabla hospital.departamentos
@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS `departamentos` (
   `id_Departamento` int(10) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id_Departamento`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 -- La exportación de datos fue deseleccionada.
 -- Volcando estructura para tabla hospital.especialidad
@@ -71,14 +71,12 @@ CREATE TABLE IF NOT EXISTS `especialidad` (
 DROP TABLE IF EXISTS `medico`;
 CREATE TABLE IF NOT EXISTS `medico` (
   `cedula` int(10) NOT NULL,
-  `id_Especialidad` int(10) DEFAULT NULL,
   `nombre` varchar(50) DEFAULT NULL,
-  `Ap_Paterno` varchar(50) DEFAULT NULL,
-  `Ap_Materno` varchar(50) DEFAULT NULL,
+  `ap_Paterno` varchar(50) DEFAULT NULL,
+  `ap_Materno` varchar(50) DEFAULT NULL,
   `telefono` varchar(15) DEFAULT NULL,
   `correo` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`cedula`),
-  KEY `id_Especialidad` (`id_Especialidad`)
+  PRIMARY KEY (`cedula`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- La exportación de datos fue deseleccionada.
@@ -96,7 +94,7 @@ CREATE TABLE IF NOT EXISTS `paciente` (
   `sexo` varchar(10) DEFAULT NULL,
   `fecha_Nacimiento` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id_Paciente`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
 
 -- La exportación de datos fue deseleccionada.
 -- Volcando estructura para tabla hospital.receta
@@ -105,18 +103,20 @@ CREATE TABLE IF NOT EXISTS `receta` (
   `id_Receta` int(10) NOT NULL AUTO_INCREMENT,
   `id_Paciente` int(10) DEFAULT NULL,
   `cedula` int(11) DEFAULT NULL,
-  `fecha` date DEFAULT NULL,
-  `peso` int(10) DEFAULT NULL,
-  `presion` int(10) DEFAULT NULL,
-  `talla` int(10) DEFAULT NULL,
-  `temperatura` int(10) DEFAULT NULL,
+  `fecha` varchar(50) DEFAULT NULL,
+  `peso` varchar(50) DEFAULT NULL,
+  `presion` varchar(50) DEFAULT NULL,
+  `talla` varchar(50) DEFAULT NULL,
+  `temperatura` varchar(50) DEFAULT NULL,
   `diagnostico` varchar(50) DEFAULT NULL,
   `observacion` varchar(100) DEFAULT NULL,
   `prescripcion` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id_Receta`),
-  KEY `id_Cita` (`id_Paciente`),
-  KEY `cedula` (`cedula`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+  KEY `FK_receta_paciente` (`id_Paciente`),
+  KEY `FK_receta_medico` (`cedula`),
+  CONSTRAINT `FK_receta_medico` FOREIGN KEY (`cedula`) REFERENCES `medico` (`cedula`),
+  CONSTRAINT `FK_receta_paciente` FOREIGN KEY (`id_Paciente`) REFERENCES `paciente` (`id_Paciente`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 -- La exportación de datos fue deseleccionada.
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
